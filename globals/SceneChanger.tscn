@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwo3w2a0nrl1t"]
+
+[ext_resource type="Script" path="res://globals/SceneChanger.cs" id="1_sv2jr"]
+
+[node name="SceneChanger" type="CanvasLayer"]
+layer = 90
+script = ExtResource("1_sv2jr")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)

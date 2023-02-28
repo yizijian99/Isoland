@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://wdgu3aetv6t0"]
+
+[ext_resource type="Script" path="res://objects/Teleporter.cs" id="1_ax7ce"]
+[ext_resource type="PackedScene" uid="uid://bwo3w2a0nrl1t" path="res://globals/SceneChanger.tscn" id="2_kvwrw"]
+
+[node name="Teleporter" type="Area2D"]
+script = ExtResource("1_ax7ce")
+
+[node name="SceneChanger" parent="." instance=ExtResource("2_kvwrw")]
