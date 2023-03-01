@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://b6wne4dr0pnbo"]
+[gd_scene load_steps=11 format=3 uid="uid://b6wne4dr0pnbo"]
 
 [ext_resource type="PackedScene" uid="uid://cwx2knn8kk4fw" path="res://scenes/Scene.tscn" id="1_p38tx"]
 [ext_resource type="Texture2D" uid="uid://d0i8i8wrhtnli" path="res://assets/H2/H2.png" id="2_kdi65"]
 [ext_resource type="PackedScene" uid="uid://wdgu3aetv6t0" path="res://scenes/Teleporter.tscn" id="3_546lv"]
+[ext_resource type="Script" path="res://scenes/H2.cs" id="3_hhibk"]
+[ext_resource type="PackedScene" uid="uid://b2tq1swsa5n5s" path="res://scenes/Interactable.tscn" id="4_o4j6c"]
+[ext_resource type="PackedScene" uid="uid://dbjqn16558sf6" path="res://ui/DialogBubble.tscn" id="5_hrouc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_epwpp"]
 radius = 74.027
@@ -13,8 +16,12 @@ size = Vector2(232, 360)
 [sub_resource type="CircleShape2D" id="CircleShape2D_blwcy"]
 radius = 81.2711
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70hbi"]
+size = Vector2(232, 548)
+
 [node name="Background" instance=ExtResource("1_p38tx")]
 texture = ExtResource("2_kdi65")
+script = ExtResource("3_hhibk")
 
 [node name="ToH1" parent="." index="0" instance=ExtResource("3_546lv")]
 TargetPath = "res://scenes/H1.tscn"
@@ -36,3 +43,19 @@ TargetPath = "res://scenes/H4.tscn"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ToH4" index="0"]
 position = Vector2(750, 18)
 shape = SubResource("CircleShape2D_blwcy")
+
+[node name="Granny" parent="." index="3" instance=ExtResource("4_o4j6c")]
+position = Vector2(-363, -18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Granny" index="0"]
+position = Vector2(-44, -10)
+shape = SubResource("RectangleShape2D_70hbi")
+
+[node name="DialogBubble" parent="Granny" index="1" instance=ExtResource("5_hrouc")]
+visible = false
+offset_left = 35.0
+offset_top = -30.0
+offset_right = 35.0
+offset_bottom = -30.0
+grow_horizontal = 1
+grow_vertical = 1
