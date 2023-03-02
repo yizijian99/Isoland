@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bevegug0eqjfu"]
+
+[ext_resource type="Script" path="res://objects/SceneItem.cs" id="1_tb32e"]
+
+[node name="SceneItem" type="Area2D"]
+script = ExtResource("1_tb32e")
