@@ -1,4 +1,5 @@
 using Godot;
+using Isoland.globals;
 
 namespace Isoland.scenes
 {
@@ -11,10 +12,6 @@ namespace Isoland.scenes
                 .SetTrans(Tween.TransitionType.Sine);
             tween.TweenProperty(this, "scale", Vector2.One, 0.3)
                 .From(Vector2.One * 1.05f);
-        }
-
-        public override void _Process(double delta)
-        {
         }
     }
 }
