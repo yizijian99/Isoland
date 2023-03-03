@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using Isoland.globals;
+using Isoland.items;
 using Isoland.objects;
 using Isoland.ui;
 
@@ -11,7 +13,9 @@ namespace Isoland.scenes
 
         private DialogBubble _dialogBubble;
 
-        private static readonly List<string> Conversation = new List<string>
+        private Game _game;
+
+        private static readonly List<string> Conversation = new()
         {
             "我年纪大了，很多事情想不起来了。",
             "你是谁？算了，我也不在乎你是谁。你能帮我找到信箱的要是吗？",
@@ -28,6 +32,7 @@ namespace Isoland.scenes
             base._Ready();
             _granny = GetNode<Interactable>("Granny");
             _dialogBubble = GetNode<DialogBubble>("Granny/DialogBubble");
+            _game = GetNode<Game>($"/root/{nameof(Game)}");
 
             _granny.Connect(Interactable.SignalName.Interact, Callable.From(OnGrannyInteract));
         }
@@ -38,7 +43,30 @@ namespace Isoland.scenes
 
         private void OnGrannyInteract()
         {
-            _dialogBubble.ShowDialog(Conversation);
+            string _flag = "mail_accepted";
+
+            var item = _game.Inventory.ActiveItem;
+            if (item != null)
+            {
+                if (item == GD.Load<Item>("res://items/mail.tres"))
+                {
+                    _game.Flags.Add(_flag);
+                    _game.Inventory.RemoveItem(item);
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            if (_game.Flags.Has(_flag))
+            {
+                _dialogBubble.ShowDialog(new List<string>{"没想到老头子的船票寄过来了，谢谢你。"});
+            }
+            else
+            {
+                _dialogBubble.ShowDialog(Conversation);
+            }
         }
     }
 }

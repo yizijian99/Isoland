@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3tjygqb70412"]
+
+[ext_resource type="PackedScene" uid="uid://bbt0csoqrrm1j" path="res://ui/Inventory.tscn" id="1_ga7gg"]
+
+[node name="HUD" type="CanvasLayer"]
+
+[node name="Inventory" parent="." instance=ExtResource("1_ga7gg")]
+anchors_preset = 3

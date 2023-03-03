@@ -51,6 +51,7 @@ shape = SubResource("CircleShape2D_blwcy")
 
 [node name="Granny" parent="." index="3" instance=ExtResource("4_o4j6c")]
 position = Vector2(-363, -18)
+AllowItem = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Granny" index="0"]
 position = Vector2(-44, -10)

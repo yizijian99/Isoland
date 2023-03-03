@@ -1,13 +1,15 @@
 using Godot;
+using Isoland.globals;
 
 namespace Isoland.objects
 {
     [Tool]
-    [GodotClassName(nameof(Interactable))]
     public partial class Interactable : Area2D
     {
         [Signal]
         public delegate void InteractEventHandler();
+
+        [Export] public bool AllowItem;
         
         private Texture2D _textureVariable;
 
@@ -45,6 +47,12 @@ namespace Isoland.objects
         public override void _InputEvent(Viewport viewport, InputEvent @event, int shapeIdx)
         {
             if (!@event.IsActionPressed("interact"))
+            {
+                return;
+            }
+
+            var game = GetNode<Game>($"/root/{nameof(Game)}");
+            if (game.Inventory.ActiveItem != null && !AllowItem)
             {
                 return;
             }

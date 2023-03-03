@@ -1,6 +1,7 @@
 ﻿using System;
 using Godot;
 using Isoland.globals;
+using Isoland.items;
 
 namespace Isoland.objects
 {
@@ -53,6 +54,7 @@ namespace Isoland.objects
         {
             base._Interact();
             Game.Flags.Add(GetFlag());
+            Game.Inventory.AddItem((Item) _item);
 
             var sprite = new Sprite2D {Texture = (Texture2D) _item?.Get(items.Item.Const.SceneTexture)};
             GetParent().AddChild(sprite);
