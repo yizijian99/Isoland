@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b6wne4dr0pnbo"]
+[gd_scene load_steps=14 format=3 uid="uid://b6wne4dr0pnbo"]
 
 [ext_resource type="PackedScene" uid="uid://cwx2knn8kk4fw" path="res://scenes/Scene.tscn" id="1_p38tx"]
 [ext_resource type="Texture2D" uid="uid://d0i8i8wrhtnli" path="res://assets/H2/H2.png" id="2_kdi65"]
@@ -9,8 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://bevegug0eqjfu" path="res://objects/SceneItem.tscn" id="7_jp25e"]
 [ext_resource type="Resource" uid="uid://nt038qi64si6" path="res://items/key.tres" id="8_tmpcv"]
 [ext_resource type="Texture2D" uid="uid://bxorh7xkjeyio" path="res://assets/H2/key.png" id="9_221pv"]
-[ext_resource type="Resource" uid="uid://cf1ohkwvy1j8" path="res://items/mail.tres" id="10_qk0lh"]
-[ext_resource type="Texture2D" uid="uid://11dcgm3ja8nq" path="res://assets/H4/mail_piece.png" id="11_72voh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_epwpp"]
 radius = 74.027
@@ -67,11 +65,6 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="Key" parent="." index="4" instance=ExtResource("7_jp25e")]
-position = Vector2(-99, 114)
+position = Vector2(-79, 346)
 Item = ExtResource("8_tmpcv")
 TextureVariable = ExtResource("9_221pv")
-
-[node name="Mail" parent="." index="5" instance=ExtResource("7_jp25e")]
-position = Vector2(166, 172)
-Item = ExtResource("10_qk0lh")
-TextureVariable = ExtResource("11_72voh")

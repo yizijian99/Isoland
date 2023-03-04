@@ -5,4 +5,3 @@
 [node name="HUD" type="CanvasLayer"]
 
 [node name="Inventory" parent="." instance=ExtResource("1_ga7gg")]
-anchors_preset = 3

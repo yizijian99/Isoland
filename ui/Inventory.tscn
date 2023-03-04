@@ -22,7 +22,7 @@ texture_margin_bottom = 23.1434
 region_rect = Rect2(0, 0, 360, 120)
 
 [node name="Inventory" type="VBoxContainer"]
-anchors_preset = -1
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
