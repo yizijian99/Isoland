@@ -1,16 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://cfd7d20k2n6lp"]
+[gd_scene load_steps=11 format=3 uid="uid://cfd7d20k2n6lp"]
 
 [ext_resource type="PackedScene" uid="uid://cwx2knn8kk4fw" path="res://scenes/Scene.tscn" id="1_i77ea"]
 [ext_resource type="Texture2D" uid="uid://ddhkef8ins58h" path="res://assets/H2A/roomsignBG.png" id="2_4f1w5"]
 [ext_resource type="PackedScene" uid="uid://wdgu3aetv6t0" path="res://scenes/Teleporter.tscn" id="3_gskts"]
+[ext_resource type="Script" path="res://scenes/H2A.cs" id="3_wcu6p"]
 [ext_resource type="Script" path="res://mini_game/Board.cs" id="4_vmu3c"]
 [ext_resource type="Resource" uid="uid://cogd1fvgw613s" path="res://mini_game/Easy.tres" id="5_stot5"]
+[ext_resource type="PackedScene" uid="uid://b2tq1swsa5n5s" path="res://scenes/Interactable.tscn" id="6_ul2q7"]
+[ext_resource type="Texture2D" uid="uid://crmmrq1r5n7qo" path="res://assets/H2A/gearbg.png" id="7_1u3et"]
+[ext_resource type="Texture2D" uid="uid://ctkut2gnvhao1" path="res://assets/H2A/gear.png" id="8_8sobo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1lgnb"]
 radius = 83.0542
 
 [node name="Background" instance=ExtResource("1_i77ea")]
 texture = ExtResource("2_4f1w5")
+script = ExtResource("3_wcu6p")
 
 [node name="Teleporter" parent="." index="0" instance=ExtResource("3_gskts")]
 TargetPath = "res://scenes/H2.tscn"
@@ -23,3 +28,10 @@ shape = SubResource("CircleShape2D_1lgnb")
 position = Vector2(-41, 2)
 script = ExtResource("4_vmu3c")
 Config = ExtResource("5_stot5")
+
+[node name="Reset" parent="." index="2" instance=ExtResource("6_ul2q7")]
+position = Vector2(647, -347)
+TextureVariable = ExtResource("7_1u3et")
+
+[node name="Sprite2D" type="Sprite2D" parent="Reset" index="2"]
+texture = ExtResource("8_8sobo")

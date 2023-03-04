@@ -19,7 +19,7 @@ namespace Isoland.mini_game
             Choice
         }
 
-        private static class Const
+        public static class Const
         {
             // custom property name constant
             public const string Placements = nameof(_placements);

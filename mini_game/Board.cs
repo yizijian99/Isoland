@@ -15,7 +15,7 @@ namespace Isoland.mini_game
         private static Texture2D _lineTexture;
 
         [Export] public float Radius = 350.0f;
-        
+
         private Resource _config;
 
         [Export]
@@ -28,11 +28,13 @@ namespace Isoland.mini_game
                 {
                     _config.Disconnect(Resource.SignalName.Changed, Callable.From(UpdateBoard));
                 }
+
                 _config = value;
                 if (_config != null && !_config.IsConnected(Resource.SignalName.Changed, Callable.From(UpdateBoard)))
                 {
                     _config.Connect(Resource.SignalName.Changed, Callable.From(UpdateBoard));
                 }
+
                 UpdateBoard();
             }
         }
@@ -51,7 +53,7 @@ namespace Isoland.mini_game
         {
             base._Ready();
             _game = GetNode<Game>($"/root/{nameof(Game)}");
-            
+
             UpdateBoard();
         }
 
@@ -88,13 +90,13 @@ namespace Isoland.mini_game
             }
 
             var connections =
-                (Godot.Collections.Dictionary<H2AConfig.Slot, Array<H2AConfig.Slot>>) _config.Get("_connections");
+                (Godot.Collections.Dictionary<H2AConfig.Slot, Array<H2AConfig.Slot>>) _config.Get(H2AConfig.Const.Connections);
             if (connections == null)
             {
                 return;
             }
 
-            var placement = (Array<H2AConfig.Slot>) _config.Get("_placements");
+            var placement = (Array<H2AConfig.Slot>) _config.Get(H2AConfig.Const.Placements);
             if (placement == null || placement.Count == 0)
             {
                 return;
@@ -123,7 +125,7 @@ namespace Isoland.mini_game
                     AddChild(line);
                 }
             }
-            
+
             foreach (var slot in slots)
             {
                 if (slot == H2AConfig.Slot.Null)
@@ -148,12 +150,13 @@ namespace Isoland.mini_game
             {
                 available.Remove(value.CurrentSlot);
             }
-            
-            
+
+
             if (available.Count == 1)
             {
                 var availableSlot = available[0];
-                var connections = (Godot.Collections.Dictionary<H2AConfig.Slot, Array<H2AConfig.Slot>>) _config.Get("_connections");
+                var connections =
+                    (Godot.Collections.Dictionary<H2AConfig.Slot, Array<H2AConfig.Slot>>) _config.Get(H2AConfig.Const.Connections);
                 if (connections[stone.CurrentSlot].Contains(availableSlot))
                 {
                     MoveStone(stone, availableSlot);
@@ -181,10 +184,20 @@ namespace Isoland.mini_game
             {
                 return;
             }
-            
+
             _game.Flags.Add("h2a_unlocked");
             var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
             sceneChanger.ChangeScene("res://scenes/H2.tscn");
+        }
+
+        public void Reset()
+        {
+            foreach (var stone in _stoneMap.Values)
+            {
+                var placements = _config.Get(H2AConfig.Const.Placements)
+                    .As<Array<H2AConfig.Slot>>();
+                MoveStone(stone, placements[(int) stone.TargetSlot]);
+            }
         }
     }
 }
