@@ -1,7 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfd7d20k2n6lp"]
+[gd_scene load_steps=7 format=3 uid="uid://cfd7d20k2n6lp"]
 
 [ext_resource type="PackedScene" uid="uid://cwx2knn8kk4fw" path="res://scenes/Scene.tscn" id="1_i77ea"]
 [ext_resource type="Texture2D" uid="uid://ddhkef8ins58h" path="res://assets/H2A/roomsignBG.png" id="2_4f1w5"]
+[ext_resource type="PackedScene" uid="uid://wdgu3aetv6t0" path="res://scenes/Teleporter.tscn" id="3_gskts"]
+[ext_resource type="Script" path="res://mini_game/Board.cs" id="4_vmu3c"]
+[ext_resource type="Resource" uid="uid://cogd1fvgw613s" path="res://mini_game/Easy.tres" id="5_stot5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1lgnb"]
+radius = 83.0542
 
 [node name="Background" instance=ExtResource("1_i77ea")]
 texture = ExtResource("2_4f1w5")
+
+[node name="Teleporter" parent="." index="0" instance=ExtResource("3_gskts")]
+TargetPath = "res://scenes/H2.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleporter" index="1"]
+position = Vector2(-810, -427)
+shape = SubResource("CircleShape2D_1lgnb")
+
+[node name="Board" type="Node2D" parent="." index="1"]
+position = Vector2(-41, 2)
+script = ExtResource("4_vmu3c")
+Config = ExtResource("5_stot5")

@@ -8,7 +8,7 @@ namespace Isoland.mini_game
     [Tool]
     public partial class H2AConfig : Resource
     {
-        private enum Slot
+        public enum Slot
         {
             Null,
             Time,
@@ -22,8 +22,8 @@ namespace Isoland.mini_game
         private static class Const
         {
             // custom property name constant
-            public const string Placements = "placements";
-            public const string Connections = "connections";
+            public const string Placements = nameof(_placements);
+            public const string Connections = nameof(_connections);
 
             // custom property prefix constant
             public static readonly string PlacementsPrefix = $"{Placements}/";
@@ -37,16 +37,16 @@ namespace Isoland.mini_game
             public const string HintString = "hint_string";
         }
 
-        private Array<Slot> _placement = new();
+        private Array<Slot> _placements = new();
         private Dictionary<Slot, Array<Slot>> _connections = new();
 
         public H2AConfig()
         {
             var slots = Enum.GetValues<Slot>();
-            _placement.Resize(slots.Length);
+            _placements.Resize(slots.Length);
             for (var i = 0; i < slots.Length; i++)
             {
-                _placement[i] = Slot.Null;
+                _placements[i] = Slot.Null;
                 _connections.Add(slots[i], new Array<Slot>());
             }
         }
@@ -112,7 +112,7 @@ namespace Isoland.mini_game
             {
                 propertyString = propertyString.TrimStart(Const.PlacementsPrefix.ToCharArray());
                 var index = (int) Enum.Parse(typeof(Slot), propertyString);
-                return Variant.From(_placement[index]);
+                return Variant.From(_placements[index]);
             }
 
             if (propertyString.StartsWith(Const.ConnectionsPrefix))
@@ -149,7 +149,7 @@ namespace Isoland.mini_game
             {
                 propertyString = propertyString.TrimStart(Const.PlacementsPrefix.ToCharArray());
                 var index = (int) Enum.Parse(typeof(Slot), propertyString);
-                _placement[index] = value.As<Slot>();
+                _placements[index] = value.As<Slot>();
                 EmitChanged();
                 return true;
             }
