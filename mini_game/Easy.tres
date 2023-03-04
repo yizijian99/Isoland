@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cogd1fvgw613s"]
+
+[ext_resource type="Script" path="res://mini_game/H2AConfig.cs" id="1_hwdo0"]
+
+[resource]
+script = ExtResource("1_hwdo0")
+placements = null
+connections = null

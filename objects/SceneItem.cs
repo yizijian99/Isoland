@@ -23,7 +23,7 @@ namespace Isoland.objects
                 {
                     TextureVariable = (Texture2D) _item?.Get(items.Item.Const.SceneTexture);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     _item = null;
                 }
