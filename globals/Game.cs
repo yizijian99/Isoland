@@ -12,6 +12,12 @@ namespace Isoland.globals
 
         public readonly FlagsClass Flags = new();
         public readonly InventoryClass Inventory = new();
+        
+        public void BackToTitle()
+        {
+            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
+            sceneChanger.ChangeScene("res://ui/TitleScreen.tscn");
+        }
     }
 
     public partial class FlagsClass : Node
