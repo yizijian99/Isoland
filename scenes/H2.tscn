@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b6wne4dr0pnbo"]
+[gd_scene load_steps=14 format=3 uid="uid://b6wne4dr0pnbo"]
 
 [ext_resource type="PackedScene" uid="uid://cwx2knn8kk4fw" path="res://scenes/Scene.tscn" id="1_p38tx"]
 [ext_resource type="Texture2D" uid="uid://d0i8i8wrhtnli" path="res://assets/H2/H2.png" id="2_kdi65"]
@@ -6,9 +6,6 @@
 [ext_resource type="Script" path="res://scenes/H2.cs" id="3_hhibk"]
 [ext_resource type="PackedScene" uid="uid://b2tq1swsa5n5s" path="res://scenes/Interactable.tscn" id="4_o4j6c"]
 [ext_resource type="PackedScene" uid="uid://dbjqn16558sf6" path="res://ui/DialogBubble.tscn" id="5_hrouc"]
-[ext_resource type="PackedScene" uid="uid://bevegug0eqjfu" path="res://objects/SceneItem.tscn" id="7_jp25e"]
-[ext_resource type="Resource" uid="uid://nt038qi64si6" path="res://items/key.tres" id="8_tmpcv"]
-[ext_resource type="Texture2D" uid="uid://bxorh7xkjeyio" path="res://assets/H2/key.png" id="9_221pv"]
 [ext_resource type="Script" path="res://objects/FlagSwitch.cs" id="10_pxr3f"]
 [ext_resource type="Texture2D" uid="uid://dwgyec5uisayg" path="res://assets/H2/door.png" id="11_jsww0"]
 
@@ -85,8 +82,3 @@ offset_right = 35.0
 offset_bottom = -30.0
 grow_horizontal = 1
 grow_vertical = 1
-
-[node name="Key" parent="." index="4" instance=ExtResource("7_jp25e")]
-position = Vector2(-79, 346)
-Item = ExtResource("8_tmpcv")
-TextureVariable = ExtResource("9_221pv")

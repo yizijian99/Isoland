@@ -1,22 +1,131 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using Isoland.data;
 using Isoland.items;
+using Newtonsoft.Json;
 
 namespace Isoland.globals
 {
     public partial class Game : Node
     {
+        private const string SavePath = "user://data.sav";
+        
         [Signal]
         public delegate void ChangedEventHandler();
 
         public readonly FlagsClass Flags = new();
         public readonly InventoryClass Inventory = new();
-        
+
         public void BackToTitle()
         {
+            SaveGame();
             var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
             sceneChanger.ChangeScene("res://ui/TitleScreen.tscn");
+        }
+
+        private GameData Write()
+        {
+            GameData.FlagsData flagsData = new()
+            {
+                Flags = Flags.Flags
+            };
+
+            List<string> items = new();
+            if (Inventory.Items != null && Inventory.Items.Count > 0)
+            {
+                items.AddRange(Inventory.Items.Select(item => item.ResourcePath));
+            }
+
+            GameData.InventoryData inventoryData = new()
+            {
+                Items = items,
+                CurrentItemIndex = Inventory.CurrentItemIndex
+            };
+
+            return new GameData
+            {
+                Flags = flagsData,
+                Inventory = inventoryData,
+                CurrentScene = GetTree().CurrentScene.SceneFilePath
+            };
+        }
+
+        private void Read(GameData gameData)
+        {
+            var flagsData = gameData?.Flags;
+            Flags.Flags = flagsData == null ? new List<string>() : flagsData.Flags;
+            EmitSignal(FlagsClass.SignalName.Changed);
+
+            var inventory = gameData?.Inventory ?? new GameData.InventoryData();
+            Inventory.Items ??= new List<Item>();
+            Inventory.Items.Clear();
+            
+            foreach (var item in inventory.Items)
+            {
+                var resource = GD.Load<Item>(item);
+                Inventory.Items.Add(resource);
+            }
+
+            Inventory.CurrentItemIndex = inventory.CurrentItemIndex;
+            EmitSignal(InventoryClass.SignalName.Changed);
+
+            if (gameData?.CurrentScene == null || gameData.CurrentScene == string.Empty) return;
+            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
+            sceneChanger.ChangeScene(gameData.CurrentScene);
+        }
+
+        private void Reset()
+        {
+            Flags.Flags.Clear();
+            EmitSignal(FlagsClass.SignalName.Changed);
+
+            Inventory.Items.Clear();
+            Inventory.CurrentItemIndex = -1;
+            EmitSignal(InventoryClass.SignalName.Changed);
+        }
+
+        private void SaveGame()
+        {
+            var fileAccess = FileAccess.Open(SavePath, FileAccess.ModeFlags.Write);
+            if (fileAccess == null)
+            {
+                GD.Print($"[ERROR] Open file error! path: {SavePath}");
+                return;
+            }
+
+            var gameData = Write();
+            var json = JsonConvert.SerializeObject(gameData);
+            fileAccess.StoreString(json);
+            fileAccess.Dispose();
+        }
+
+        public void LoadGame()
+        {
+            var fileAccess = FileAccess.Open(SavePath, FileAccess.ModeFlags.Read);
+            if (fileAccess == null)
+            {
+                GD.Print($"[ERROR] Open file error! path: {SavePath}");
+                return;
+            }
+            
+            var json = fileAccess.GetAsText();
+            var gameData = JsonConvert.DeserializeObject<GameData>(json);
+            Read(gameData);
+            fileAccess.Dispose();
+        }
+
+        public void NewGame()
+        {
+            Reset();
+            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
+            sceneChanger.ChangeScene("res://scenes/H1.tscn");
+        }
+
+        public static bool HasSaveFile()
+        {
+            return FileAccess.FileExists(SavePath);
         }
     }
 
@@ -25,7 +134,13 @@ namespace Isoland.globals
         [Signal]
         public delegate void ChangedEventHandler();
 
-        private readonly List<string> _flags = new();
+        private List<string> _flags = new();
+
+        public List<string> Flags
+        {
+            get => _flags;
+            set => _flags = value;
+        }
 
         public bool Has(string str)
         {
@@ -51,8 +166,21 @@ namespace Isoland.globals
 
         public Item ActiveItem;
 
-        private readonly List<Item> _items = new();
+        private List<Item> _items = new();
+
+        public List<Item> Items
+        {
+            get => _items;
+            set => _items = value;
+        }
+
         private int _currentItemIndex = -1;
+
+        public int CurrentItemIndex
+        {
+            get => _currentItemIndex;
+            set => _currentItemIndex = value;
+        }
 
         public int GetItemCount()
         {

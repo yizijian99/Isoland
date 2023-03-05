@@ -11,15 +11,15 @@ config_version=5
 [application]
 
 config/name="Isoland"
-run/main_scene="res://scenes/H1.tscn"
+run/main_scene="res://ui/TitleScreen.tscn"
 config/features=PackedStringArray("4.0", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
+SceneChanger="*res://globals/SceneChanger.tscn"
 Game="*res://globals/Game.cs"
 HUD="res://globals/HUD.tscn"
-SceneChanger="*res://globals/SceneChanger.tscn"
 
 [display]
 

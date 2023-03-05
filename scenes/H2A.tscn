@@ -33,5 +33,5 @@ Config = ExtResource("5_stot5")
 position = Vector2(647, -347)
 TextureVariable = ExtResource("7_1u3et")
 
-[node name="Sprite2D" type="Sprite2D" parent="Reset" index="2"]
+[node name="Sprite2D" type="Sprite2D" parent="Reset" index="0"]
 texture = ExtResource("8_8sobo")
