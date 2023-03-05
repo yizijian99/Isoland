@@ -1,10 +1,12 @@
 using Godot;
+using GodotUtilities;
 using Isoland.scenes;
 
 namespace Isoland.globals
 {
     public partial class SceneChanger : CanvasLayer
     {
+        [Node("ColorRect")]
         private ColorRect _colorRect;
 
         [Export(PropertyHint.File, "*.mp3")] public string DefaultMusic;
@@ -15,9 +17,17 @@ namespace Isoland.globals
         [Signal]
         public delegate void GameExitedEventHandler();
 
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
+
         public override void _Ready()
         {
-            _colorRect = GetNode<ColorRect>("ColorRect");
             
             var soundManager = GetNode<SoundManager>($"/root/{nameof(SoundManager)}");
             soundManager.PlayMusic(DefaultMusic);

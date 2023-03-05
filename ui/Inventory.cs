@@ -1,4 +1,5 @@
 using Godot;
+using GodotUtilities;
 using Isoland.globals;
 using Isoland.items;
 
@@ -12,28 +13,36 @@ namespace Isoland.ui
 
         private Game _game;
 
+        [Node("Label")]
         private Label _label;
+        [Node("ItemBar/Prev")]
         private TextureButton _prev;
+        [Node("ItemBar/Use")]
         private TextureButton _use;
+        [Node("ItemBar/Next")]
         private TextureButton _next;
+        [Node("ItemBar/Use/Prop")]
         private Sprite2D _prop;
+        [Node("ItemBar/Use/Hand")]
         private Sprite2D _hand;
+        [Node("Label/Timer")]
         private Timer _timer;
 
         private Tween _handOutro;
         private Tween _labelOutro;
 
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
+
         public override void _Ready()
         {
             _game = GetNode<Game>($"/root/{nameof(Game)}");
-            
-            _label = GetNode<Label>("Label");
-            _prev = GetNode<TextureButton>("ItemBar/Prev");
-            _use = GetNode<TextureButton>("ItemBar/Use");
-            _next = GetNode<TextureButton>("ItemBar/Next");
-            _prop = GetNode<Sprite2D>("ItemBar/Use/Prop");
-            _hand = GetNode<Sprite2D>("ItemBar/Use/Hand");
-            _timer = GetNode<Timer>("Label/Timer");
             
             _game.Inventory.Connect(Game.SignalName.Changed, Callable.From(() => UpdateUi()));
             _prev.Connect(BaseButton.SignalName.Pressed, Callable.From(OnPrevPressed));

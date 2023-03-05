@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using GodotUtilities;
 
 namespace Isoland.ui
 {
@@ -7,15 +8,24 @@ namespace Isoland.ui
     {
         private const int InitLine = -1;
 
+        [Node("Content")]
         private Label _content;
 
         private List<string> _dialogs = new();
 
         private int _currentLine = InitLine;
 
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
+
         public override void _Ready()
         {
-            _content = GetNode<Label>("Content");
             _content.Connect(Control.SignalName.GuiInput, Callable.From<InputEvent>(OnContentGuiInput));
 
             Hide();

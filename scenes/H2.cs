@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using GodotUtilities;
 using Isoland.globals;
 using Isoland.items;
 using Isoland.objects;
@@ -9,8 +10,10 @@ namespace Isoland.scenes
 {
     public partial class H2 : Scene
     {
+        [Node("Granny")]
         private Interactable _granny;
 
+        [Node("Granny/DialogBubble")]
         private DialogBubble _dialogBubble;
 
         private Game _game;
@@ -27,11 +30,18 @@ namespace Isoland.scenes
             "老了才明白，万物静默如迷。"
         };
 
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
+
         public override void _Ready()
         {
             base._Ready();
-            _granny = GetNode<Interactable>("Granny");
-            _dialogBubble = GetNode<DialogBubble>("Granny/DialogBubble");
             _game = GetNode<Game>($"/root/{nameof(Game)}");
 
             _granny.Connect(Interactable.SignalName.Interact, Callable.From(OnGrannyInteract));
