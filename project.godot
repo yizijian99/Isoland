@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+SoundManager="*res://globals/SoundManager.tscn"
 SceneChanger="*res://globals/SceneChanger.tscn"
 Game="*res://globals/Game.cs"
 HUD="res://globals/HUD.tscn"

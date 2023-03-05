@@ -5,6 +5,7 @@
 [node name="SceneChanger" type="CanvasLayer"]
 layer = 90
 script = ExtResource("1_sv2jr")
+DefaultMusic = "res://assets/Music/PaperWings.mp3"
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false

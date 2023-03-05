@@ -1,10 +1,12 @@
 using Godot;
-using Isoland.globals;
 
 namespace Isoland.scenes
 {
     public partial class Scene : Sprite2D
     {
+        [Export(PropertyHint.File, "*.mp3")]
+        public string MusicOverride = string.Empty;
+        
         public override void _Ready()
         {
             var tween = CreateTween();

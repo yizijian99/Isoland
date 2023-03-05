@@ -7,6 +7,8 @@ namespace Isoland.globals
     {
         private ColorRect _colorRect;
 
+        [Export(PropertyHint.File, "*.mp3")] public string DefaultMusic;
+
         [Signal]
         public delegate void GameEnteredEventHandler();
 
@@ -16,6 +18,9 @@ namespace Isoland.globals
         public override void _Ready()
         {
             _colorRect = GetNode<ColorRect>("ColorRect");
+            
+            var soundManager = GetNode<SoundManager>($"/root/{nameof(SoundManager)}");
+            soundManager.PlayMusic(DefaultMusic);
         }
 
         public void ChangeScene(string path)
@@ -37,7 +42,12 @@ namespace Isoland.globals
             root.RemoveChild(oldScene);
             root.AddChild(newScene);
             GetTree().CurrentScene = newScene;
+            OnSceneChanged(oldScene, newScene);
+            oldScene.QueueFree();
+        }
 
+        private void OnSceneChanged(Node oldScene, Node newScene)
+        {
             var wasInGame = oldScene is Scene;
             var isInGame = newScene is Scene;
             if (wasInGame != isInGame)
@@ -51,8 +61,16 @@ namespace Isoland.globals
                     EmitSignal(SignalName.GameExited);
                 }
             }
-            
-            oldScene.QueueFree();
+
+            var music = DefaultMusic;
+            var musicOverride = (string) newScene.Get(nameof(Scene.PropertyName.MusicOverride));
+            if (isInGame && !string.IsNullOrEmpty(musicOverride))
+            {
+                music = musicOverride;
+            }
+
+            var soundManager = GetNode<SoundManager>($"/root/{nameof(SoundManager)}");
+            soundManager.PlayMusic(music);
         }
     }
 }
