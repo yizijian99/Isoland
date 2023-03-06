@@ -25,7 +25,6 @@ namespace Isoland.ui
         public override void _Ready()
         {
             base._Ready();
-            var game = GetNode<Game>($"/root/{nameof(Game)}");
 
             _newGame.Connect(BaseButton.SignalName.Pressed, Callable.From(OnNewPressed));
             _loadGame.Connect(BaseButton.SignalName.Pressed, Callable.From(OnLoadPressed));
@@ -36,14 +35,12 @@ namespace Isoland.ui
 
         private void OnNewPressed()
         {
-            var game = GetNode<Game>($"/root/{nameof(Game)}");
-            game.NewGame();
+            this._<Game>().NewGame();
         }
 
         private void OnLoadPressed()
         {
-            var game = GetNode<Game>($"/root/{nameof(Game)}");
-            game.LoadGame();
+            this._<Game>().LoadGame();
         }
 
         private void OnQuitPressed()

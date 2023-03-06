@@ -41,8 +41,6 @@ namespace Isoland.mini_game
 
         private readonly System.Collections.Generic.Dictionary<H2AConfig.Slot, Stone> _stoneMap = new();
 
-        private Game _game;
-
         public Board()
         {
             _slotTexture = GD.Load<Texture2D>("res://assets/H2A/CIRCLE.png");
@@ -52,7 +50,6 @@ namespace Isoland.mini_game
         public override void _Ready()
         {
             base._Ready();
-            _game = GetNode<Game>($"/root/{nameof(Game)}");
 
             UpdateBoard();
         }
@@ -185,9 +182,8 @@ namespace Isoland.mini_game
                 return;
             }
 
-            _game.Flags.Add("h2a_unlocked");
-            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
-            sceneChanger.ChangeScene("res://scenes/H2.tscn");
+            this._<Game>().Flags.Add("h2a_unlocked");
+            this._<SceneChanger>().ChangeScene("res://scenes/H2.tscn");
         }
 
         public void Reset()

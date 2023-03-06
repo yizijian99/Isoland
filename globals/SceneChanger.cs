@@ -29,8 +29,7 @@ namespace Isoland.globals
         public override void _Ready()
         {
             
-            var soundManager = GetNode<SoundManager>($"/root/{nameof(SoundManager)}");
-            soundManager.PlayMusic(DefaultMusic);
+            this._<SoundManager>().PlayMusic(DefaultMusic);
         }
 
         public void ChangeScene(string path)
@@ -79,8 +78,7 @@ namespace Isoland.globals
                 music = musicOverride;
             }
 
-            var soundManager = GetNode<SoundManager>($"/root/{nameof(SoundManager)}");
-            soundManager.PlayMusic(music);
+            this._<SoundManager>().PlayMusic(music);
         }
     }
 }

@@ -11,8 +11,7 @@ namespace Isoland.objects
         protected override void _Interact()
         {
             base._Interact();
-            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
-            sceneChanger.ChangeScene(TargetPath);
+            this._<SceneChanger>().ChangeScene(TargetPath);
         }
     }
 }

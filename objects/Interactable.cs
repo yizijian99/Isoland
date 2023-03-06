@@ -51,8 +51,7 @@ namespace Isoland.objects
                 return;
             }
 
-            var game = GetNode<Game>($"/root/{nameof(Game)}");
-            if (game.Inventory.ActiveItem != null && !AllowItem)
+            if (this._<Game>().Inventory.ActiveItem != null && !AllowItem)
             {
                 return;
             }

@@ -16,8 +16,6 @@ namespace Isoland.scenes
         [Node("Granny/DialogBubble")]
         private DialogBubble _dialogBubble;
 
-        private Game _game;
-
         private static readonly List<string> Conversation = new()
         {
             "我年纪大了，很多事情想不起来了。",
@@ -42,7 +40,6 @@ namespace Isoland.scenes
         public override void _Ready()
         {
             base._Ready();
-            _game = GetNode<Game>($"/root/{nameof(Game)}");
 
             _granny.Connect(Interactable.SignalName.Interact, Callable.From(OnGrannyInteract));
         }
@@ -55,13 +52,13 @@ namespace Isoland.scenes
         {
             string _flag = "mail_accepted";
 
-            var item = _game.Inventory.ActiveItem;
+            var item = this._<Game>().Inventory.ActiveItem;
             if (item != null)
             {
                 if (item == GD.Load<Item>("res://items/mail.tres"))
                 {
-                    _game.Flags.Add(_flag);
-                    _game.Inventory.RemoveItem(item);
+                    this._<Game>().Flags.Add(_flag);
+                    this._<Game>().Inventory.RemoveItem(item);
                 }
                 else
                 {
@@ -69,7 +66,7 @@ namespace Isoland.scenes
                 }
             }
 
-            if (_game.Flags.Has(_flag))
+            if (this._<Game>().Flags.Has(_flag))
             {
                 _dialogBubble.ShowDialog(new List<string>{"没想到老头子的船票寄过来了，谢谢你。"});
             }

@@ -21,8 +21,7 @@ namespace Isoland.globals
         public void BackToTitle()
         {
             SaveGame();
-            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
-            sceneChanger.ChangeScene("res://ui/TitleScreen.tscn");
+            this._<SceneChanger>().ChangeScene("res://ui/TitleScreen.tscn");
         }
 
         private GameData Write()
@@ -72,8 +71,7 @@ namespace Isoland.globals
             EmitSignal(InventoryClass.SignalName.Changed);
 
             if (gameData?.CurrentScene == null || gameData.CurrentScene == string.Empty) return;
-            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
-            sceneChanger.ChangeScene(gameData.CurrentScene);
+            this._<SceneChanger>().ChangeScene(gameData.CurrentScene);
         }
 
         private void Reset()
@@ -119,8 +117,7 @@ namespace Isoland.globals
         public void NewGame()
         {
             Reset();
-            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
-            sceneChanger.ChangeScene("res://scenes/H1.tscn");
+            this._<SceneChanger>().ChangeScene("res://scenes/H1.tscn");
         }
 
         public static bool HasSaveFile()
