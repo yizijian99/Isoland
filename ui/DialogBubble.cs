@@ -72,7 +72,7 @@ namespace Isoland.ui
             }
         }
 
-        // TODO GuiInput信号不生效
+        // GuiInput信号不生效：子节点Content地Mouse.Filter属性没有设置为Stop
         private void OnContentGuiInput(InputEvent @event)
         {
             if (@event.IsActionPressed("interact"))
