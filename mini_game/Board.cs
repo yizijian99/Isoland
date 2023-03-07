@@ -26,13 +26,13 @@ namespace Isoland.mini_game
             {
                 if (_config != null && _config.IsConnected(Resource.SignalName.Changed, Callable.From(UpdateBoard)))
                 {
-                    _config.Disconnect(Resource.SignalName.Changed, Callable.From(UpdateBoard));
+                    _config.Changed -= UpdateBoard;
                 }
 
                 _config = value;
                 if (_config != null && !_config.IsConnected(Resource.SignalName.Changed, Callable.From(UpdateBoard)))
                 {
-                    _config.Connect(Resource.SignalName.Changed, Callable.From(UpdateBoard));
+                    _config.Changed += UpdateBoard;
                 }
 
                 UpdateBoard();
@@ -136,7 +136,7 @@ namespace Isoland.mini_game
                 stone.Position = GetSlotPosition(stone.CurrentSlot);
                 _stoneMap[slot] = stone;
                 AddChild(stone);
-                stone.Connect(Interactable.SignalName.Interact, Callable.From(() => RequestMove(stone)));
+                stone.Interact += () => RequestMove(stone);
             }
         }
 

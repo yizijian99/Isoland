@@ -40,12 +40,12 @@ namespace Isoland.ui
 
         public override void _Ready()
         {
-            
-            this._<Game>().Inventory.Connect(Game.SignalName.Changed, Callable.From(() => UpdateUi()));
-            _prev.Connect(BaseButton.SignalName.Pressed, Callable.From(OnPrevPressed));
-            _use.Connect(BaseButton.SignalName.Pressed, Callable.From(OnUsePressed));
-            _next.Connect(BaseButton.SignalName.Pressed, Callable.From(OnNextPressed));
-            _timer.Connect(Timer.SignalName.Timeout, Callable.From(OnTimerTimeOut));
+
+            this._<Game>().Inventory.Changed += () => UpdateUi();
+            _prev.Pressed += OnPrevPressed;
+            _use.Pressed += OnUsePressed;
+            _next.Pressed += OnNextPressed;
+            _timer.Timeout += OnTimerTimeOut;
 
             _hand.Hide();
             var handModulate = _hand.Modulate;

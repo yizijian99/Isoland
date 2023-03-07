@@ -26,7 +26,7 @@ namespace Isoland.ui
 
         public override void _Ready()
         {
-            _content.Connect(Control.SignalName.GuiInput, Callable.From<InputEvent>(OnContentGuiInput));
+            _content.GuiInput += OnContentGuiInput;
 
             Hide();
         }

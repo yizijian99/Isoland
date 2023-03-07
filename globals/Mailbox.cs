@@ -23,7 +23,7 @@ namespace Isoland.globals
         {
             base._Ready();
 
-            _interactable.Connect(Interactable.SignalName.Interact, Callable.From(OnInteractableInteract));
+            _interactable.Interact += OnInteractableInteract;
         }
 
         private void OnInteractableInteract()

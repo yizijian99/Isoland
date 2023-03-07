@@ -26,9 +26,9 @@ namespace Isoland.ui
         {
             base._Ready();
 
-            _newGame.Connect(BaseButton.SignalName.Pressed, Callable.From(OnNewPressed));
-            _loadGame.Connect(BaseButton.SignalName.Pressed, Callable.From(OnLoadPressed));
-            _quitGame.Connect(BaseButton.SignalName.Pressed, Callable.From(OnQuitPressed));
+            _newGame.Pressed += OnNewPressed;
+            _loadGame.Pressed += OnLoadPressed;
+            _quitGame.Pressed += OnQuitPressed;
 
             _loadGame.Disabled = !Game.HasSaveFile();
         }

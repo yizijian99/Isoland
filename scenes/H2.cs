@@ -41,7 +41,7 @@ namespace Isoland.scenes
         {
             base._Ready();
 
-            _granny.Connect(Interactable.SignalName.Interact, Callable.From(OnGrannyInteract));
+            _granny.Interact += OnGrannyInteract;
         }
 
         public override void _Process(double delta)

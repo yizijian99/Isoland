@@ -41,7 +41,6 @@ namespace Isoland.objects
         {
             if (!Engine.IsEditorHint() && this._<Game>().Flags.Has(GetFlag()))
             {
-                // TODO 拾取道具后，二次进入场景时，已拾取的道具会闪烁
                 QueueFree();
             }
         }

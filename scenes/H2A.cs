@@ -28,7 +28,7 @@ namespace Isoland.scenes
         public override void _Ready()
         {
             base._Ready();
-            _reset.Connect(Interactable.SignalName.Interact, Callable.From(OnResetInteract));
+            _reset.Interact += OnResetInteract;
         }
 
         private void OnResetInteract()

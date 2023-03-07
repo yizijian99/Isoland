@@ -26,7 +26,7 @@ namespace Isoland.objects
                 _switchNode = GetChild(1) as Node2D;
             }
 
-            this._<Game>().Flags.Connect(Game.SignalName.Changed, Callable.From(UpdateNodes));
+            this._<Game>().Flags.Changed += UpdateNodes;
             UpdateNodes();
         }
 
