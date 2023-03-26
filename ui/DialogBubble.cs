@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using GodotUtilities;
 
 namespace Isoland.ui
 {
@@ -7,16 +8,25 @@ namespace Isoland.ui
     {
         private const int InitLine = -1;
 
+        [Node("Content")]
         private Label _content;
 
         private List<string> _dialogs = new();
 
         private int _currentLine = InitLine;
 
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
+
         public override void _Ready()
         {
-            _content = GetNode<Label>("Content");
-            _content.Connect(Control.SignalName.GuiInput, Callable.From<InputEvent>(OnContentGuiInput));
+            _content.GuiInput += OnContentGuiInput;
 
             Hide();
         }
@@ -62,7 +72,7 @@ namespace Isoland.ui
             }
         }
 
-        // TODO GuiInput信号不生效
+        // GuiInput信号不生效：子节点Content地Mouse.Filter属性没有设置为Stop
         private void OnContentGuiInput(InputEvent @event)
         {
             if (@event.IsActionPressed("interact"))

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using GodotUtilities;
 using Isoland.globals;
 using Isoland.items;
 using Isoland.objects;
@@ -9,11 +10,11 @@ namespace Isoland.scenes
 {
     public partial class H2 : Scene
     {
+        [Node("Granny")]
         private Interactable _granny;
 
+        [Node("Granny/DialogBubble")]
         private DialogBubble _dialogBubble;
-
-        private Game _game;
 
         private static readonly List<string> Conversation = new()
         {
@@ -27,14 +28,20 @@ namespace Isoland.scenes
             "老了才明白，万物静默如迷。"
         };
 
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
+
         public override void _Ready()
         {
             base._Ready();
-            _granny = GetNode<Interactable>("Granny");
-            _dialogBubble = GetNode<DialogBubble>("Granny/DialogBubble");
-            _game = GetNode<Game>($"/root/{nameof(Game)}");
 
-            _granny.Connect(Interactable.SignalName.Interact, Callable.From(OnGrannyInteract));
+            _granny.Interact += OnGrannyInteract;
         }
 
         public override void _Process(double delta)
@@ -45,13 +52,13 @@ namespace Isoland.scenes
         {
             string _flag = "mail_accepted";
 
-            var item = _game.Inventory.ActiveItem;
+            var item = this._<Game>().Inventory.ActiveItem;
             if (item != null)
             {
                 if (item == GD.Load<Item>("res://items/mail.tres"))
                 {
-                    _game.Flags.Add(_flag);
-                    _game.Inventory.RemoveItem(item);
+                    this._<Game>().Flags.Add(_flag);
+                    this._<Game>().Inventory.RemoveItem(item);
                 }
                 else
                 {
@@ -59,7 +66,7 @@ namespace Isoland.scenes
                 }
             }
 
-            if (_game.Flags.Has(_flag))
+            if (this._<Game>().Flags.Has(_flag))
             {
                 _dialogBubble.ShowDialog(new List<string>{"没想到老头子的船票寄过来了，谢谢你。"});
             }

@@ -26,13 +26,13 @@ namespace Isoland.mini_game
             {
                 if (_config != null && _config.IsConnected(Resource.SignalName.Changed, Callable.From(UpdateBoard)))
                 {
-                    _config.Disconnect(Resource.SignalName.Changed, Callable.From(UpdateBoard));
+                    _config.Changed -= UpdateBoard;
                 }
 
                 _config = value;
                 if (_config != null && !_config.IsConnected(Resource.SignalName.Changed, Callable.From(UpdateBoard)))
                 {
-                    _config.Connect(Resource.SignalName.Changed, Callable.From(UpdateBoard));
+                    _config.Changed += UpdateBoard;
                 }
 
                 UpdateBoard();
@@ -40,8 +40,6 @@ namespace Isoland.mini_game
         }
 
         private readonly System.Collections.Generic.Dictionary<H2AConfig.Slot, Stone> _stoneMap = new();
-
-        private Game _game;
 
         public Board()
         {
@@ -52,7 +50,6 @@ namespace Isoland.mini_game
         public override void _Ready()
         {
             base._Ready();
-            _game = GetNode<Game>($"/root/{nameof(Game)}");
 
             UpdateBoard();
         }
@@ -139,7 +136,7 @@ namespace Isoland.mini_game
                 stone.Position = GetSlotPosition(stone.CurrentSlot);
                 _stoneMap[slot] = stone;
                 AddChild(stone);
-                stone.Connect(Interactable.SignalName.Interact, Callable.From(() => RequestMove(stone)));
+                stone.Interact += () => RequestMove(stone);
             }
         }
 
@@ -185,9 +182,8 @@ namespace Isoland.mini_game
                 return;
             }
 
-            _game.Flags.Add("h2a_unlocked");
-            var sceneChanger = GetNode<SceneChanger>($"/root/{nameof(SceneChanger)}");
-            sceneChanger.ChangeScene("res://scenes/H2.tscn");
+            this._<Game>().Flags.Add("h2a_unlocked");
+            this._<SceneChanger>().ChangeScene("res://scenes/H2.tscn");
         }
 
         public void Reset()

@@ -10,8 +10,6 @@ namespace Isoland.objects
     {
         private Resource _item;
 
-        public Game Game;
-
         [Export]
         public Resource Item
         {
@@ -41,11 +39,8 @@ namespace Isoland.objects
 
         public override void _Ready()
         {
-            Game = GetNode<Game>($"/root/{nameof(Game)}");
-
-            if (!Engine.IsEditorHint() && Game.Flags.Has(GetFlag()))
+            if (!Engine.IsEditorHint() && this._<Game>().Flags.Has(GetFlag()))
             {
-                // TODO 拾取道具后，二次进入场景时，已拾取的道具会闪烁
                 QueueFree();
             }
         }
@@ -53,8 +48,8 @@ namespace Isoland.objects
         protected override void _Interact()
         {
             base._Interact();
-            Game.Flags.Add(GetFlag());
-            Game.Inventory.AddItem((Item) _item);
+            this._<Game>().Flags.Add(GetFlag());
+            this._<Game>().Inventory.AddItem((Item) _item);
 
             var sprite = new Sprite2D {Texture = (Texture2D) _item?.Get(items.Item.Const.SceneTexture)};
             GetParent().AddChild(sprite);

@@ -1,4 +1,5 @@
 using Godot;
+using GodotUtilities;
 using Isoland.globals;
 using Isoland.items;
 
@@ -10,36 +11,41 @@ namespace Isoland.ui
         /*TODO 改变Inventory的尺寸时如何让其向左上角生长*/
         /*TODO _label.Hide(); _label.Show(); 暂时先注释掉，只是用透明度实现道具label消失与显示效果。道具label隐藏时道具栏会上移*/
 
-        private Game _game;
-
+        [Node("Label")]
         private Label _label;
+        [Node("ItemBar/Prev")]
         private TextureButton _prev;
+        [Node("ItemBar/Use")]
         private TextureButton _use;
+        [Node("ItemBar/Next")]
         private TextureButton _next;
+        [Node("ItemBar/Use/Prop")]
         private Sprite2D _prop;
+        [Node("ItemBar/Use/Hand")]
         private Sprite2D _hand;
+        [Node("Label/Timer")]
         private Timer _timer;
 
         private Tween _handOutro;
         private Tween _labelOutro;
 
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
+
         public override void _Ready()
         {
-            _game = GetNode<Game>($"/root/{nameof(Game)}");
-            
-            _label = GetNode<Label>("Label");
-            _prev = GetNode<TextureButton>("ItemBar/Prev");
-            _use = GetNode<TextureButton>("ItemBar/Use");
-            _next = GetNode<TextureButton>("ItemBar/Next");
-            _prop = GetNode<Sprite2D>("ItemBar/Use/Prop");
-            _hand = GetNode<Sprite2D>("ItemBar/Use/Hand");
-            _timer = GetNode<Timer>("Label/Timer");
-            
-            _game.Inventory.Connect(Game.SignalName.Changed, Callable.From(() => UpdateUi()));
-            _prev.Connect(BaseButton.SignalName.Pressed, Callable.From(OnPrevPressed));
-            _use.Connect(BaseButton.SignalName.Pressed, Callable.From(OnUsePressed));
-            _next.Connect(BaseButton.SignalName.Pressed, Callable.From(OnNextPressed));
-            _timer.Connect(Timer.SignalName.Timeout, Callable.From(OnTimerTimeOut));
+
+            this._<Game>().Inventory.Changed += () => UpdateUi();
+            _prev.Pressed += OnPrevPressed;
+            _use.Pressed += OnUsePressed;
+            _next.Pressed += OnNextPressed;
+            _timer.Timeout += OnTimerTimeOut;
 
             _hand.Hide();
             var handModulate = _hand.Modulate;
@@ -56,9 +62,9 @@ namespace Isoland.ui
 
         public override void _Input(InputEvent @event)
         {
-            if (@event.IsActionPressed("interact") && _game.Inventory.ActiveItem != null)
+            if (@event.IsActionPressed("interact") && this._<Game>().Inventory.ActiveItem != null)
             {
-                _game.Inventory.SetDeferred(nameof(Game.Inventory.ActiveItem), Variant.From<Item>(null));
+                this._<Game>().Inventory.SetDeferred(nameof(Game.Inventory.ActiveItem), Variant.From<Item>(null));
 
                 _handOutro = CreateTween();
                 _handOutro.SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Sine).SetParallel();
@@ -70,12 +76,12 @@ namespace Isoland.ui
 
         private void UpdateUi(bool isInit = false)
         {
-            var count = _game.Inventory.GetItemCount();
+            var count = this._<Game>().Inventory.GetItemCount();
             _prev.Disabled = count < 2;
             _next.Disabled = count < 2;
             Visible = count > 0;
 
-            var item = _game.Inventory.GetCurrentItem();
+            var item = this._<Game>().Inventory.GetCurrentItem();
             if (item == null)
             {
                 return;
@@ -108,17 +114,17 @@ namespace Isoland.ui
 
         private void OnPrevPressed()
         {
-            _game.Inventory.SelectPrev();
+            this._<Game>().Inventory.SelectPrev();
         }
 
         private void OnNextPressed()
         {
-            _game.Inventory.SelectNext();
+            this._<Game>().Inventory.SelectNext();
         }
 
         private void OnUsePressed()
         {
-            _game.Inventory.ActiveItem = _game.Inventory.GetCurrentItem();
+            this._<Game>().Inventory.ActiveItem = this._<Game>().Inventory.GetCurrentItem();
             if (_handOutro != null && _handOutro.IsValid())
             {
                 _handOutro.Kill();

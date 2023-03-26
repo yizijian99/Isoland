@@ -1,4 +1,5 @@
 using Godot;
+using GodotUtilities;
 using Isoland.mini_game;
 using Isoland.objects;
 
@@ -6,20 +7,28 @@ namespace Isoland.scenes
 {
     public partial class H2A : Scene
     {
+        [Node("Board")]
         private Board _board;
 
+        [Node("Reset")]
         private Interactable _reset;
         
+        [Node("Reset/Sprite2D")]
         private Sprite2D _gear;
+
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
 
         public override void _Ready()
         {
             base._Ready();
-            _board = GetNode<Board>("Board");
-            _reset = GetNode<Interactable>("Reset");
-            _gear = GetNode<Sprite2D>("Reset/Sprite2D");
-
-            _reset.Connect(Interactable.SignalName.Interact, Callable.From(OnResetInteract));
+            _reset.Interact += OnResetInteract;
         }
 
         private void OnResetInteract()

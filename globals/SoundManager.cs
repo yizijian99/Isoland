@@ -1,15 +1,25 @@
 using Godot;
+using GodotUtilities;
 
 namespace Isoland.globals
 {
     public partial class SoundManager : Node
     {
+        [Node("BGMPlayer")]
         private AudioStreamPlayer _bgmPlayer;
+
+        public override void _Notification(int what)
+        {
+            base._Notification(what);
+            if (what == NotificationSceneInstantiated)
+            {
+                this.WireNodes();
+            }
+        }
 
         public override void _Ready()
         {
             base._Ready();
-            _bgmPlayer = GetNode<AudioStreamPlayer>("BGMPlayer");
         }
 
         public void PlayMusic(string path)
